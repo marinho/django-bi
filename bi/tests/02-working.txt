@@ -1,0 +1,92 @@
+WORKING
+=======
+
+    >>> from utils.tests import model_has_fields, is_model_class_fk, \
+    ...     is_field_type, is_model_pk
+    >>> from django.db import models
+    >>> from django.contrib.auth.models import User
+
+    >>> from bi.models import Query, QueryField, QueryOrder, QueryCondition
+    >>> from bi.parsing import parse_condition
+
+First Example
+
+    >>> u = User.objects.create(username='admin1', is_superuser=True, is_active=True)
+    >>> u = User.objects.create(username='admin2', is_superuser=True, is_active=False)
+    >>> u = User.objects.create(username='user1', is_superuser=False, is_active=True)
+    >>> u = User.objects.create(username='user2', is_superuser=False, is_active=True)
+
+    >>> q1 = Query.objects.get(name='users-kinds')
+
+    >>> res = q1.execute()
+
+    >>> res == [{u'is_superuser': False, 'count': 2}, {u'is_superuser': True, 'count': 1}]
+    True
+
+Parsing conditional strings
+
+    >>> qs = QueryOrder.objects.all()
+    >>> qs = parse_condition('field_name = my_field', qs)
+    >>> qs.query.as_sql()
+    ('SELECT "bi_queryorder"."id", "bi_queryorder"."query_id", "bi_queryorder"."field_name", "bi_queryorder"."kind" FROM "bi_queryorder" WHERE "bi_queryorder"."field_name" = %s ', ('my_field',))
+
+    >>> qs = QueryOrder.objects.all()
+    >>> qs = parse_condition('field_name != my_field', qs)
+    >>> qs.query.as_sql()
+    ('SELECT "bi_queryorder"."id", "bi_queryorder"."query_id", "bi_queryorder"."field_name", "bi_queryorder"."kind" FROM "bi_queryorder" WHERE NOT ("bi_queryorder"."field_name" = %s )', ('my_field',))
+
+    >>> qs = QueryOrder.objects.all()
+    >>> qs = parse_condition('field_name <> my_field', qs)
+    >>> qs.query.as_sql()
+    ('SELECT "bi_queryorder"."id", "bi_queryorder"."query_id", "bi_queryorder"."field_name", "bi_queryorder"."kind" FROM "bi_queryorder" WHERE NOT ("bi_queryorder"."field_name" = %s )', ('my_field',))
+
+    >>> qs = QueryOrder.objects.all()
+    >>> qs = parse_condition('pk > 4', qs)
+    >>> qs.query.as_sql()
+    ('SELECT "bi_queryorder"."id", "bi_queryorder"."query_id", "bi_queryorder"."field_name", "bi_queryorder"."kind" FROM "bi_queryorder" WHERE "bi_queryorder"."id" > %s ', (4,))
+
+    >>> qs = QueryOrder.objects.all()
+    >>> qs = parse_condition('pk >= 4', qs)
+    >>> qs.query.as_sql()
+    ('SELECT "bi_queryorder"."id", "bi_queryorder"."query_id", "bi_queryorder"."field_name", "bi_queryorder"."kind" FROM "bi_queryorder" WHERE "bi_queryorder"."id" >= %s ', (4,))
+
+    >>> qs = QueryOrder.objects.all()
+    >>> qs = parse_condition('pk < 4', qs)
+    >>> qs.query.as_sql()
+    ('SELECT "bi_queryorder"."id", "bi_queryorder"."query_id", "bi_queryorder"."field_name", "bi_queryorder"."kind" FROM "bi_queryorder" WHERE "bi_queryorder"."id" < %s ', (4,))
+
+    >>> qs = QueryOrder.objects.all()
+    >>> qs = parse_condition('pk <= 4', qs)
+    >>> qs.query.as_sql()
+    ('SELECT "bi_queryorder"."id", "bi_queryorder"."query_id", "bi_queryorder"."field_name", "bi_queryorder"."kind" FROM "bi_queryorder" WHERE "bi_queryorder"."id" <= %s ', (4,))
+
+    >>> qs = QueryOrder.objects.all()
+    >>> qs = parse_condition('field_name starts with my_', qs)
+    >>> qs.query.as_sql()
+    ('SELECT "bi_queryorder"."id", "bi_queryorder"."query_id", "bi_queryorder"."field_name", "bi_queryorder"."kind" FROM "bi_queryorder" WHERE UPPER("bi_queryorder"."field_name"::text) LIKE UPPER(%s) ', (u'my\\_%',))
+
+    >>> qs = QueryOrder.objects.all()
+    >>> qs = parse_condition('field_name ends with _field', qs)
+    >>> qs.query.as_sql()
+    ('SELECT "bi_queryorder"."id", "bi_queryorder"."query_id", "bi_queryorder"."field_name", "bi_queryorder"."kind" FROM "bi_queryorder" WHERE UPPER("bi_queryorder"."field_name"::text) LIKE UPPER(%s) ', (u'%\\_field',))
+
+    >>> qs = QueryOrder.objects.all()
+    >>> qs = parse_condition('field_name contains y_f', qs)
+    >>> qs.query.as_sql()
+    ('SELECT "bi_queryorder"."id", "bi_queryorder"."query_id", "bi_queryorder"."field_name", "bi_queryorder"."kind" FROM "bi_queryorder" WHERE UPPER("bi_queryorder"."field_name"::text) LIKE UPPER(%s) ', (u'%y\\_f%',))
+
+    >>> qs = QueryOrder.objects.all()
+    >>> qs = parse_condition('field_name not starts with my_', qs)
+    >>> qs.query.as_sql()
+    ('SELECT "bi_queryorder"."id", "bi_queryorder"."query_id", "bi_queryorder"."field_name", "bi_queryorder"."kind" FROM "bi_queryorder" WHERE NOT (UPPER("bi_queryorder"."field_name"::text) LIKE UPPER(%s) )', (u'my\\_%',))
+
+    >>> qs = QueryOrder.objects.all()
+    >>> qs = parse_condition('field_name not ends with _field', qs)
+    >>> qs.query.as_sql()
+    ('SELECT "bi_queryorder"."id", "bi_queryorder"."query_id", "bi_queryorder"."field_name", "bi_queryorder"."kind" FROM "bi_queryorder" WHERE NOT (UPPER("bi_queryorder"."field_name"::text) LIKE UPPER(%s) )', (u'%\\_field',))
+
+    >>> qs = QueryOrder.objects.all()
+    >>> qs = parse_condition('field_name not contains y_f', qs)
+    >>> qs.query.as_sql()
+    ('SELECT "bi_queryorder"."id", "bi_queryorder"."query_id", "bi_queryorder"."field_name", "bi_queryorder"."kind" FROM "bi_queryorder" WHERE NOT (UPPER("bi_queryorder"."field_name"::text) LIKE UPPER(%s) )', (u'%y\\_f%',))
+

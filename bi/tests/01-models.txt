@@ -1,0 +1,139 @@
+MODELS
+======
+
+    >>> from utils.tests import model_has_fields, is_model_class_fk, \
+    ...     is_field_type, is_model_pk
+    >>> from django.db import models
+    >>> from django.contrib.contenttypes.models import ContentType
+    >>> from django.utils.translation import ugettext as _
+
+Query
+-----
+
+    >>> from bi.models import Query
+
+    >>> model_has_fields(Query, (
+    ...     'name',             # the identifier of this query
+    ...     'title',            # the high level title
+    ...     'kind',             # the kind ('Visual', 'SQL', 'QuerySet', 'Object')
+    ...     'content_type',     # optional FK to ContentType
+    ...     'limit',            # the limit for slicing
+    ...     'url',              # URL to redirect to (when kind is 'redirect')
+    ...     )) 
+    []
+
+Field 'name' must be unique, to be called as identifier
+
+    >>> is_field_type(Query, 'name', models.SlugField, unique=True)
+    True
+
+Field 'kind' will be used to set if this Query is a Visual made one, or SQL-based, or QuerySet-based,
+or Function-oriented, etc.
+
+    >>> is_field_type(Query, 'kind', models.CharField, max_length=10)
+    True
+
+    >>> [c[0] for c in Query._meta.get_field_by_name('kind')[0].choices]
+    ['visual', 'redirect', 'embed']
+
+Field 'content_type' must be a FK to ContentType
+
+    >>> is_model_class_fk(Query, 'content_type', ContentType)
+    True
+
+    >>> is_field_type(Query, 'content_type', models.ForeignKey, null=True, blank=True)
+    True
+
+Field 'limit' must be an Integer field
+
+    >>> is_field_type(Query, 'limit', models.IntegerField, blank=True, default=0)
+    True
+
+QueryField
+----------
+
+    >>> from bi.models import QueryField
+
+    >>> model_has_fields(QueryField, (
+    ...     'query',
+    ...     'name',
+    ...     'title',
+    ...     'kind',         # ('Value','Sum','Min','Max','Avg','Count','Group')
+    ...     'expression',
+    ...     'sequence',
+    ...     'choices',
+    ...     )) 
+    []
+
+Field 'query' must be a FK to Query
+
+    >>> is_model_class_fk(QueryField, 'query', Query)
+    True
+
+Kinds of a field
+
+    >>> is_field_type(QueryField, 'kind', models.CharField, max_length=10)
+    True
+
+    >>> [c[0] for c in QueryField._meta.get_field_by_name('kind')[0].choices]
+    ['value', 'sum', 'min', 'max', 'avg', 'count']
+
+QueryOrder
+----------
+
+    >>> from bi.models import QueryOrder
+
+    >>> model_has_fields(QueryOrder, (
+    ...     'query',
+    ...     'field_name',
+    ...     'kind',     # ('Asc','Desc')
+    ...     )) 
+    []
+
+Field 'query' must be a FK to Query
+
+    >>> is_model_class_fk(QueryField, 'query', Query)
+    True
+
+Kinds of a field
+
+    >>> is_field_type(QueryOrder, 'kind', models.CharField, max_length=1)
+    True
+
+    >>> [c[0] for c in QueryOrder._meta.get_field_by_name('kind')[0].choices]
+    ['', '-']
+
+QueryCondition
+--------------
+
+    >>> from bi.models import QueryCondition
+
+    >>> model_has_fields(QueryCondition, (
+    ...     'query',
+    ...     'expression',
+    ...     )) 
+    []
+
+First Example
+-------------
+
+    >>> from django.contrib.auth.models import User
+    >>> ctype = ContentType.objects.get_for_model(User)
+
+Query
+
+    >>> q1 = Query.objects.create(name='users-kinds', title='Users Kinds', kind='visual', content_type=ctype)
+
+Fields
+
+    >>> qf1 = QueryField.objects.create(query=q1, name='is_superuser', title='Is Superuser', kind='value')
+    >>> qf2 = QueryField.objects.create(query=q1, name='count', title='Count', kind='count', expression='is_superuser')
+
+Ordering
+
+    >>> qo1 = QueryOrder.objects.create(query=q1, field_name='is_superuser')
+
+Condition
+
+    >>> qc1 = QueryCondition.objects.create(query=q1, expression='is_active = True')
+

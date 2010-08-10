@@ -1,0 +1,28 @@
+<fieldset class="module module_resumos caixa">
+    <input type="hidden" class="url_caixa" value="{{ request.path_info }}" />
+
+    <h2>{% block title %}{{ query.title }}{% endblock %}</h2>
+
+    <div class="interno">
+        {% block content %}
+        <table style="width: 100%">
+            <thead>
+                {% for field in query.queryfield_set.all %}
+                <th class="{{ field.name }}">{{ field.title }}</th>
+                {% endfor %}
+            </thead>
+
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    {% for cell in item.cells %}
+                    <td class="{{ cell.field_name }}">{{ cell.display|default_if_none:cell.value }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endblock content %}
+    </div>
+</fieldset>
+

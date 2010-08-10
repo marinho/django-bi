@@ -1,0 +1,17 @@
+{% extends "admin/base_limpo.html" %} {# FIXME #}
+
+{% load i18n %}
+
+{% block content %}
+<fieldset class="module">
+    <h2>{{ query.title }}</h2>
+
+    <ul>
+        <li><a href="{% url bi_query_list query.name %}">{% trans "Summary" %}</a></li>
+        {#<li><a href="{% url bi_query_report query.name %}">{% trans "Report" %}</a></li>#}
+        <li><a href="{% url bi_query_chart_pie query.name %}">{% trans "Chart - Pie" %}</a></li>
+        <li><a href="{% url bi_query_chart_bar query.name %}">{% trans "Chart - Bar" %}</a></li>
+    </ul>
+</fieldset>
+{% endblock content %}
+

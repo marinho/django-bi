@@ -1,0 +1,15 @@
+*.orig
+*.pyc
+*.pyo
+*.pyd
+.*.swp
+*~
+.bzr
+.svn
+Thumbs.db
+Git Bash.lnk
+log/
+*$py.class
+
+.DS_Store
+

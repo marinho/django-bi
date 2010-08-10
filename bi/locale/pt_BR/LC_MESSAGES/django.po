@@ -1,0 +1,150 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-10-28 11:07-0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: choices.py:6
+msgid "Visual"
+msgstr ""
+
+#: choices.py:7
+msgid "Redirect to URL"
+msgstr "Redirecionar para URL"
+
+#: choices.py:17
+msgid "Value"
+msgstr "Valor"
+
+#: choices.py:18
+msgid "Sum"
+msgstr "Soma"
+
+#: choices.py:19
+msgid "Min"
+msgstr "Mínimo"
+
+#: choices.py:20
+msgid "Max"
+msgstr "Máximo"
+
+#: choices.py:21
+msgid "Avg"
+msgstr "Média"
+
+#: choices.py:22
+msgid "Count"
+msgstr "Quantidade"
+
+#: choices.py:28
+msgid "Asc"
+msgstr "Ascendente"
+
+#: choices.py:29
+msgid "Desc"
+msgstr "Descendente"
+
+#: models.py:13 models.py:57 models.py:85 models.py:101
+msgid "Query"
+msgstr "Consulta"
+
+#: models.py:14
+msgid "Queries"
+msgstr "Consultas"
+
+#: models.py:16 models.py:58
+msgid "Name"
+msgstr "Nome"
+
+#: models.py:17 models.py:59
+msgid "Title"
+msgstr "Título"
+
+#: models.py:24 models.py:66 models.py:93
+msgid "Kind"
+msgstr "Tipo"
+
+#: models.py:26
+msgid "Content Type"
+msgstr "Modelo no Banco de Dados"
+
+#: models.py:27
+msgid "Limit"
+msgstr "Limite"
+
+#: models.py:28
+msgid "URL"
+msgstr ""
+
+#: models.py:53
+msgid "Field"
+msgstr "Campo"
+
+#: models.py:54
+msgid "Fields"
+msgstr "Campos"
+
+#: models.py:68 models.py:102
+msgid "Expression"
+msgstr "Expressão"
+
+#: models.py:69
+msgid "Sequence"
+msgstr "Sequência"
+
+#: models.py:72
+msgid "Choices"
+msgstr "Opções"
+
+#: models.py:73
+msgid "JSON-formmated key/value dictionary with equivalent display values"
+msgstr "Dicionário do tipo chave/valor em formato JSON com values e seus rótulos equivalentes"
+
+#: models.py:82
+msgid "Order"
+msgstr "Ordenação"
+
+#: models.py:83
+msgid "Orders"
+msgstr "Ordenações"
+
+#: models.py:86
+msgid "Field Name"
+msgstr "Campo"
+
+#: models.py:98
+msgid "Condition"
+msgstr "Condição"
+
+#: models.py:99
+msgid "Conditions"
+msgstr "Condições"
+
+#: templates/bi/chart_bar.html:18 templates/bi/chart_bar.html.py:20
+#: templates/bi/chart_pie.html:18 templates/bi/chart_pie.html.py:20
+msgid "Loading..."
+msgstr "Carregando..."
+
+#: templates/bi/info.html:10
+msgid "Summary"
+msgstr "Sumário"
+
+#: templates/bi/info.html:12
+msgid "Chart - Pie"
+msgstr "Gráfico - Pizza"
+
+#: templates/bi/info.html:13
+msgid "Chart - Bar"
+msgstr "Gráfico - Barras"
