@@ -12,6 +12,5 @@ setup(
     author_email = 'marinho@gmail.com',
     license = 'GNU Lesser General Public License (LGPL)',
     packages = ['bi'],
-    data_files = data_files,
 )
 
