@@ -11,6 +11,6 @@ setup(
     author = 'Marinho Brandao',
     author_email = 'marinho@gmail.com',
     license = 'GNU Lesser General Public License (LGPL)',
-    packages = ['bi'],
+    packages = ['bi','bi.migrations','bi.locale','bi.templates','bi.templates.bi','bi.tests'],
 )
 
